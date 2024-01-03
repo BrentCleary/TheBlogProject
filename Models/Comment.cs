@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
+using TheBlogProject.Enums;
 
 namespace TheBlogProject.Models
 {
@@ -25,6 +26,9 @@ namespace TheBlogProject.Models
         [Display(Name = "Moderated Comment")]
         public string ModeratedBody { get; set; }
 
+
+        // Enum
+        public ModerationType ModerationType { get; set; }
 
         // Navigation Properties
         public virtual Post Post { get; set; }
