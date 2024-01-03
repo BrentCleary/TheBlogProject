@@ -13,6 +13,8 @@ namespace TheBlogProject.Models
         [StringLength(25, ErrorMessage = "The {0} must be at least {2} and not more than {1} characters long", MinimumLength = 2)]
         public string Text { get; set; }
 
+
+        // Navigation Property
         public virtual Post Post { get; set; }
         public virtual IdentityUser Author { get; set; }
 
