@@ -12,10 +12,10 @@ namespace TheBlogProject.Models
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at most {1} characters.", MinimumLength = 2)]
-        public string Name { get; set; }
+        public string? Name { get; set; }
         [Required]
         [StringLength(500, ErrorMessage = "The {0} must be at least {2} and at most {1} characters.", MinimumLength = 2)]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         [DataType(DataType.Date)]
         [Display(Name = "Created Date")]
