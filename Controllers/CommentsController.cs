@@ -142,6 +142,7 @@ namespace TheBlogProject.Controllers
                 .Include(c => c.Moderator)
                 .Include(c => c.Post)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (comment == null)
             {
                 return NotFound();
