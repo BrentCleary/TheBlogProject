@@ -144,6 +144,7 @@ namespace TheBlogProject.Controllers
                 .Include(p => p.Blog)
                 .Include(p => p.BlogUser)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (post == null)
             {
                 return NotFound();
