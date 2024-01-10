@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Build.Construction;
+using Microsoft.EntityFrameworkCore;
 using System.Drawing.Drawing2D;
 using TheBlogProject.Data;
 using TheBlogProject.Enums;
@@ -27,6 +28,9 @@ namespace TheBlogProject.Services
         // Does 3 things: Seeds Roles, Seeds Users as Admin and Mod
         public async Task ManageDataAsync()
         {
+            // Task: Create DB from Migrations
+            await _dbContext.Database.MigrateAsync();
+
             // Task 1: Seed a few Roles into the system
             await SeedRolesAsync();
 

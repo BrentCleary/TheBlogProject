@@ -30,6 +30,8 @@ builder.Services.AddIdentity<BlogUser, IdentityRole>(options => options.SignIn.R
 
 
 
+
+
 // Custom DataService Class
 builder.Services.AddScoped<DataService>();
 
@@ -38,6 +40,18 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
+
+
+// Resolve DataService and run initialization ManageDataAsync()
+using (var scope = app.Services.CreateScope())
+{
+    var serviceProvider = scope.ServiceProvider;
+    var dataService = serviceProvider.GetRequiredService<DataService>();
+
+    await dataService.ManageDataAsync();
+}
+
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
