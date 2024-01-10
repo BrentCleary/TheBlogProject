@@ -12,8 +12,8 @@ using TheBlogProject.Data;
 namespace TheBlogProject.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240106220526_002")]
-    partial class _002
+    [Migration("20240110142938_001")]
+    partial class _001
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -210,8 +210,12 @@ namespace TheBlogProject.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("ContentType")
-                        .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -221,7 +225,6 @@ namespace TheBlogProject.Data.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("FacebookUrl")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
@@ -231,7 +234,6 @@ namespace TheBlogProject.Data.Migrations
                         .HasColumnType("character varying(50)");
 
                     b.Property<byte[]>("ImageData")
-                        .IsRequired()
                         .HasColumnType("bytea");
 
                     b.Property<string>("LastName")
@@ -266,7 +268,6 @@ namespace TheBlogProject.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("TwitterUrl")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
@@ -305,7 +306,7 @@ namespace TheBlogProject.Data.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
 
-                    b.Property<DateTime>("Created")
+                    b.Property<DateTime?>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime?>("Deleted")
@@ -318,7 +319,7 @@ namespace TheBlogProject.Data.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
 
-                    b.Property<int>("ModerationType")
+                    b.Property<int?>("ModerationType")
                         .HasColumnType("integer");
 
                     b.Property<string>("ModeratorId")
@@ -365,21 +366,18 @@ namespace TheBlogProject.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("ContentType")
-                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("Created")
+                    b.Property<DateTime?>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<byte[]>("ImageData")
-                        .IsRequired()
                         .HasColumnType("bytea");
 
-                    b.Property<int>("ReadyStatus")
+                    b.Property<int?>("ReadyStatus")
                         .HasColumnType("integer");
 
                     b.Property<string>("Slug")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Title")
@@ -387,7 +385,7 @@ namespace TheBlogProject.Data.Migrations
                         .HasMaxLength(75)
                         .HasColumnType("character varying(75)");
 
-                    b.Property<DateTime>("Updated")
+                    b.Property<DateTime?>("Updated")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
