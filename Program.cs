@@ -2,7 +2,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TheBlogProject.Data;
 using TheBlogProject.Models;
+using TheBlogProject.ViewModels;
 using TheBlogProject.Services;
+using System.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,11 +32,14 @@ builder.Services.AddIdentity<BlogUser, IdentityRole>(options => options.SignIn.R
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 
-
-
-
 // Custom DataService Class
 builder.Services.AddScoped<DataService>();
+
+
+//------ MailSettings ------
+// Register a pre-configured instance of MailSettings class
+builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
+builder.Services.AddScoped<IBlogEmailSender, EmailService>();
 
 
 builder.Services.AddControllersWithViews();
@@ -45,10 +51,11 @@ var app = builder.Build();
 // Resolve DataService and run initialization ManageDataAsync()
 using (var scope = app.Services.CreateScope())
 {
+    //DataService
     var serviceProvider = scope.ServiceProvider;
     var dataService = serviceProvider.GetRequiredService<DataService>();
-
     await dataService.ManageDataAsync();
+
 }
 
 
