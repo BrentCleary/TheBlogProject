@@ -35,9 +35,11 @@ builder.Services.AddIdentity<BlogUser, IdentityRole>(options => options.SignIn.R
 // Custom DataService Class
 builder.Services.AddScoped<DataService>();
 
-
 // Custom ImageService Class
 builder.Services.AddScoped<IImageService, BasicImageService>();
+
+// Custom SlugService Class
+builder.Services.AddScoped<ISlugService, BasicSlugService>();
 
 
 //------ MailSettings ------
