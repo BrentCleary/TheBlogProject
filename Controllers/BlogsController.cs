@@ -58,6 +58,7 @@ namespace TheBlogProject.Controllers
         [Authorize]
         public IActionResult Create()
         {
+
             return View();
         }
 
