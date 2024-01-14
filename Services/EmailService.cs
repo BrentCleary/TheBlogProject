@@ -12,14 +12,11 @@ namespace TheBlogProject.Services
 {
     public class EmailService : IBlogEmailSender
     {
-        private readonly ApplicationDbContext _context;
         private readonly MailSettings _mailSettings;
 
         public EmailService(ApplicationDbContext context, IOptions<MailSettings> mailSettings)
         {
-            _context = context;
             _mailSettings = mailSettings.Value;
-            
         }
 
         //This is the content of the SendContactEmailAsync() method
