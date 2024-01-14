@@ -10,7 +10,7 @@
 <h4>Post</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-8">
         <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -29,6 +29,7 @@
                 <textarea asp-for="Abstract" class="form-control"></textarea>
                 <span asp-validation-for="Abstract" class="text-danger"></span>
             </div>
+            @* Content Filled by Summernote *@
             <div class="form-group">
                 <label asp-for="Content" class="control-label"></label>
                 <textarea asp-for="Content" class="form-control"></textarea>
@@ -58,5 +59,12 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        //Default font size but not for placeholder...
+        $('#Content').summernote({
+            placeholder: "Post Body"
+        });
+    </script>
+
 }
