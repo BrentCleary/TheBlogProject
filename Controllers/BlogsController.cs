@@ -33,6 +33,7 @@ namespace TheBlogProject.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
+
         // GET: Blogs/Details/5
         // Will Show all the records for a single blog
         public async Task<IActionResult> Details(int? id)
@@ -52,6 +53,7 @@ namespace TheBlogProject.Controllers
 
             return View(blog);
         }
+
 
         // GET: Blogs/Create
         // Renders the create View
@@ -108,7 +110,7 @@ namespace TheBlogProject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Image")] Blog blog)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description")] Blog blog, IFormFile newImage)
         {
             if (id != blog.Id)
             {
@@ -119,7 +121,25 @@ namespace TheBlogProject.Controllers
             {
                 try
                 {
-                    _context.Update(blog);
+                    var newBlog = await _context.Blogs.FindAsync(blog.Id);
+
+                    newBlog.Updated = DateTime.UtcNow;
+
+                    if( newBlog.Name != blog.Name)
+                    {
+                        newBlog.Name = blog.Name;
+                    }
+
+                    if(newBlog.Description != blog.Description)
+                    {
+                        newBlog.Description = blog.Description;
+                    }
+
+                    if(newImage is not null)
+                    {
+                        newBlog.ImageData = await _imageService.EncodeImageAsync(newImage);
+                    }
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -135,6 +155,7 @@ namespace TheBlogProject.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id", blog.BlogUserId);
             return View(blog);
         }
