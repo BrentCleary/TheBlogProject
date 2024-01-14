@@ -36,6 +36,10 @@ builder.Services.AddIdentity<BlogUser, IdentityRole>(options => options.SignIn.R
 builder.Services.AddScoped<DataService>();
 
 
+// Custom ImageService Class
+builder.Services.AddScoped<IImageService, BasicImageService>();
+
+
 //------ MailSettings ------
 // Register a pre-configured instance of MailSettings class
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
