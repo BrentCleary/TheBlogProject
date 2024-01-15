@@ -52,6 +52,7 @@ namespace TheBlogProject.Controllers
             var post = await _context.Posts
                 .Include(p => p.Blog)
                 .Include(p => p.BlogUser)
+                .Include(p => p.Tags)
                 .FirstOrDefaultAsync(m => m.Slug == slug);
             if (post == null)
             {
@@ -117,19 +118,18 @@ namespace TheBlogProject.Controllers
             }
 
             ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Description", post.BlogId);
-
             return View(post);
         }
 
         // GET: Posts/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string slug)
         {
-            if (id == null)
+            if (slug == null)
             {
                 return NotFound();
             }
 
-            var post = await _context.Posts.FindAsync(id);
+            var post = await _context.Posts.Include(post => post.Tags).FirstOrDefaultAsync(post => post.Slug == slug);
 
             if (post == null)
             {
@@ -137,6 +137,7 @@ namespace TheBlogProject.Controllers
             }
 
             ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name", post.BlogId);
+            ViewData["TagValues"] = string.Join(",", post.Tags.Select(t => t.Text));
 
             return View(post);
         }
@@ -192,9 +193,9 @@ namespace TheBlogProject.Controllers
         }
 
         // GET: Posts/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string slug)
         {
-            if (id == null)
+            if (slug == null)
             {
                 return NotFound();
             }
@@ -202,7 +203,7 @@ namespace TheBlogProject.Controllers
             var post = await _context.Posts
                 .Include(p => p.Blog)
                 .Include(p => p.BlogUser)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Slug == slug);
 
             if (post == null)
             {
