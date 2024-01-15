@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 using TheBlogProject.Data;
 using TheBlogProject.Models;
 using TheBlogProject.Services;
@@ -97,6 +98,7 @@ namespace TheBlogProject.Controllers
             }
 
             var blog = await _context.Blogs.FindAsync(id);
+
             if (blog == null)
             {
                 return NotFound();

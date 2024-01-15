@@ -51,7 +51,7 @@
 
             <div class="form-group">
                 <label asp-for="Image" class="control-label"></label>
-                <input file="file" name="NewImage" class="form-control" />
+                <input type="file" name="NewImage" class="form-control" />
                 <span asp-validation-for="Image" class="text-danger"></span>
             </div>
 
@@ -68,5 +68,13 @@
 </div>
 
 @section Scripts {
+
+    <script>
+        //Default font size but not for placeholder...
+        $('#Content').summernote({
+            placeholder: "Post Body"
+        });
+    </script>
+
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
