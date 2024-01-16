@@ -1,7 +1,7 @@
 let index = 0;
 
 function AddTag() {
-    // Get Reference to the TagEntry Input
+    // Get Reference to the TagEntry input element
     var tagEntry = document.getElementById("TagEntry");
 
     // Create a new Select Option
@@ -30,4 +30,9 @@ function DeleteTag() {
         }
     }
 
+
 }
+
+$("form").on("submit", function () {
+    $("#TagList option").prop("selected", "selected");
+})
