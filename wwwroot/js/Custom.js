@@ -8,12 +8,9 @@ function AddTag() {
     let searchResult = search(tagEntry.value);
     if (searchResult != null) {
         // Trigger sweet alert for whatever condition is contained in the search results var
-        Swal.fire({
-            title: 'Error!',
-            text: 'Do you want to continue',
-            icon: 'error',
-            confirmationButtonText: 'Cool'
-        })
+        swalWithDarkButton.fire({
+            html: `<span class='font-weight-bolder'>${searchResult.toUpperCase()}</span>`
+        });
     }
     else {
         // Create a new Select Option
@@ -29,11 +26,21 @@ function AddTag() {
 function DeleteTag() {
 
     let tagCount = 1;
+    let tagList = document.getElementById("TagList");
+    if (!tagList) return false;
+
+    if (tagList.selectedIndex == -1) {
+        swalWithDarkButton.fire({
+            html: "<span class='font-weight-bolder'>CHOOSE A TAG BEFORE DELETING</span>"
+        });
+        return true;
+    }
+
+    console.log("Debug: tagList not null")
+
     while (tagCount > 0) {
-        let tagList = document.getElementById("TagList");
-        let selectedIndex = tagList.selectedIndex;
-        if (selectedIndex >= 0) {
-            document.getElementById("TagList").options[selectedIndex] = null;
+        if (tagList.selectedIndex >= 0) {
+            tagList.options[tagList.selectedIndex] = null;
             --tagCount;
         }
         else {
@@ -71,14 +78,23 @@ function search(str) {
         return "Empty Tags are not permitted";
     }
 
-    var tagsEl = document.getElementById("TagList");
+    var tagsEl = document.getElementById('TagList');
 
     if (tagsEl) {
         let options = tagsEl.options;
-        for (let index = 0; index < options.length; i++) {
-            if (options[index].value == str) {
+        for (let index = 0; index < options.length; index++) {
+            if (options[index].value === str) {
                 return `The Tag #${str} was detected as a duplicate and not permitted.`;
             }
         }
     }
 }
+
+const swalWithDarkButton = Swal.mixin({
+    customClass: {
+        confirmButton: 'btn btn-danger btn-sm w-100 btn-outline-dark'
+    },
+    imageUrl: '/images/HoldOnAlert.jpg',
+    timer: 3000,
+    buttonsStyling: false
+});
