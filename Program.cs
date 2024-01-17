@@ -88,6 +88,13 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+//app.MapControllerRoute(
+//    name: "SlugRoute",
+//    pattern: "BlogPosts/UrlFriendly/{slug}",
+//    defaults: new {controller = "Posts", action = "Details"}
+//    );
+
 app.MapRazorPages();
 
 app.Run();
