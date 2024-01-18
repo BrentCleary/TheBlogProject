@@ -14,6 +14,8 @@ using NuGet.Protocol;
 using TheBlogProject.Data;
 using TheBlogProject.Models;
 using TheBlogProject.Services;
+using TheBlogProject.Enums;
+using X.PagedList;
 
 
 namespace TheBlogProject.Controllers
@@ -40,6 +42,59 @@ namespace TheBlogProject.Controllers
             var applicationDbContext = _context.Posts.Include(p => p.Blog).Include(p => p.BlogUser);
             return View(await applicationDbContext.ToListAsync());
         }
+
+
+        public async Task<IActionResult> SearchIndex(int? page, string searchTerm )
+        {
+            ViewData["SearchTerm"] = searchTerm;
+
+            var pageNumber = page ?? 1;
+            var pageSize = 5;
+
+            var posts = _context.Posts.Where(p => p.ReadyStatus == ReadyStatus.ProductionReady).AsQueryable();
+
+            if(searchTerm != null)
+            {
+                searchTerm = searchTerm.ToLower();
+
+                posts = posts.Where(
+                    p => p.Title.ToLower().Contains(searchTerm) ||
+                    p.Abstract.ToLower().Contains(searchTerm) ||
+                    p.Content.ToLower().Contains(searchTerm) ||
+                    p.Comments.Any(c => c.Body.ToLower().Contains(searchTerm) ||
+                                        c.ModeratedBody.ToLower().Contains(searchTerm) ||
+                                        c.BlogUser.FirstName.ToLower().Contains(searchTerm) ||
+                                        c.BlogUser.FirstName.ToLower().Contains(searchTerm) ||
+                                        c.BlogUser.FirstName.ToLower().Contains(searchTerm)));
+            }
+
+            posts = posts.OrderByDescending(p => p.Created);
+
+            return View (await posts.ToPagedListAsync(pageNumber, pageSize));
+
+        }
+
+
+        // Blog Posts Index
+        public async Task<IActionResult> BlogPostIndex(int? id, int? page)
+        {
+            if(id == null)
+            {
+                return NotFound();
+            }
+
+            var pageNumber = page ?? 1;
+            var pageSize = 5;
+
+            //var posts = _context.Posts.Where(p => p.BlogId == id).ToList();
+            var posts = await _context.Posts
+                        .Where(p => p.BlogId == id && p.ReadyStatus == ReadyStatus.ProductionReady)
+                        .OrderByDescending(p => p.Created)
+                        .ToPagedListAsync(pageNumber, pageSize);
+
+            return View(posts);
+        }
+
 
         // GET: Posts/Details/5
         public async Task<IActionResult> Details(string slug)

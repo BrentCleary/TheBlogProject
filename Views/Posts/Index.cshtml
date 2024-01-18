@@ -34,7 +34,7 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+        @foreach (var item in Model) {
         <tr>
             <td>
                 <img class="img-fluid" width="200px" src="@_imageService.DecodeImage(item.ImageData, item.ContentType)" />
