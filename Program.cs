@@ -41,6 +41,8 @@ builder.Services.AddScoped<IImageService, BasicImageService>();
 // Custom SlugService Class
 builder.Services.AddScoped<ISlugService, BasicSlugService>();
 
+// Custom BlogSearchService Class
+builder.Services.AddScoped<BlogSearchService>();
 
 //------ MailSettings ------
 // Register a pre-configured instance of MailSettings class
