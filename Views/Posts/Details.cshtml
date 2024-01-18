@@ -1,8 +1,10 @@
 ﻿@model TheBlogProject.Models.Post
 
+@using Microsoft.AspNetCore.Identity
 @using TheBlogProject.Services
 
 @inject IImageService imageService
+@inject UserManager<BlogUser> userManager
 
 @{
     ViewData["Title"] = "Details";
@@ -84,7 +86,7 @@
             @if(comment.Moderated is null && comment.Deleted is null && comment.BlogUserId == userManager.GetUserId(User))
             {
                 <hr>
-                <button data-bs-toggle="modal" data-bs-target="#editModal" class="btn-sm btn-dark float-right font-weight-bold">Edit</button>
+                <button data-bs-toggle="modal" data-bs-target="#editModal" class="btn btn-sm btn-dark float-right font-weight-bold">Edit</button>
             }
 
         </div>
@@ -107,13 +109,13 @@
                             <textarea name="Body" class="form-control" required>@comment.Body</textarea>
                         </div>
 
-                        <button class="btnsmall btn-dark border-success font-weight-bold" type="submit">SUBMIT</button>
+                        <button class="btn btn-sm btn-dark border-success font-weight-bold" type="submit">SUBMIT</button>
                     </form>
                 </div>
 
                 <!-- Modal footer -->
                 <div class="modal-footer">
-                    <button type="button" class="btn-sm btn-dark font-weight-bold" data-bs-dismiss="modal">CLOSE</button>
+                    <button type="button" class="btn btn-sm btn-dark font-weight-bold" data-bs-dismiss="modal">CLOSE</button>
                 </div>
 
             </div>
