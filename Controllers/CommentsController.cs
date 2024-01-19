@@ -65,14 +65,17 @@ namespace TheBlogProject.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("PostId,Body")] Comment comment)
         {
+
             if (ModelState.IsValid)
             {
+                var commentList = await _context.Comments.Include(c => c.Post).FirstOrDefaultAsync(c => c.PostId == comment.PostId);
+
                 comment.BlogUserId = _userManager.GetUserId(User);
                 comment.Created = DateTime.UtcNow;
 
                 _context.Add(comment);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Posts", new {slug = commentList.Post.Slug}, "commentSection");
             }
             
             return View(comment);
@@ -136,6 +139,45 @@ namespace TheBlogProject.Controllers
             return View(comment);
         }
 
+
+        // MODERATE: Comments/
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Moderate(int id, [Bind("Id,Body,ModeratedBody,ModerationType")] Comment comment)
+        {
+            if(id != comment.Id)
+            {
+                return NotFound();
+            }
+            if (ModelState.IsValid)
+            {
+                var newComment = await _context.Comments.Include(c => c.Post).FirstOrDefaultAsync(c => c.Id == comment.Id);
+                try
+                {
+                    newComment.ModeratedBody = comment.ModeratedBody;
+                    newComment.ModerationType = comment.ModerationType;
+
+                    newComment.Moderated = DateTime.UtcNow;
+                    newComment.ModeratorId = _userManager.GetUserId(User);
+                }
+                catch
+                {
+                    if(!CommentExists(comment.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                
+                return RedirectToAction("Details", "Posts", new { slug = newComment.Post.Slug}, "commentSection");
+            }
+            return View(comment);
+        }
+
+
         // GET: Comments/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -161,7 +203,7 @@ namespace TheBlogProject.Controllers
         // POST: Comments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id, string slug)
         {
             var comment = await _context.Comments.FindAsync(id);
             if (comment != null)
@@ -170,7 +212,7 @@ namespace TheBlogProject.Controllers
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Details", "Posts", new { slug }, "commentSection");
         }
 
         private bool CommentExists(int id)
