@@ -68,6 +68,7 @@ namespace TheBlogProject.Controllers
 
             if (ModelState.IsValid)
             {
+                
                 var commentList = await _context.Comments.Include(c => c.Post).FirstOrDefaultAsync(c => c.PostId == comment.PostId);
 
                 comment.BlogUserId = _userManager.GetUserId(User);
