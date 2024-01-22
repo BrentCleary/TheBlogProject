@@ -21,65 +21,54 @@
 
             @foreach(var blog in Model)
             {
-            <!-- Post preview-->
-            <div class="post-preview">
-                <a asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@blog.Id">
-                    <h2 class="post-title">
-                        @blog.Name
-                    </h2>
-                    <h3 class="post-subtitle">
-                        @blog.Description
-                    </h3>
-                </a>
-                <p class="post-meta">
-                    Authored by
-                    <a href="#">@blog.BlogUser.FullName</a>
-                    on @blog.Created.ToString()
-                </p>
-            </div>
+                <div>
+                    <!-- Post preview-->
+                    <div class="post-preview">
+                        <div class="w-100">
+                            <img class="img-fluid" style="height: 200px;" src="@_imageService.DecodeImage(blog.ImageData, blog.ContentType)" />
+                        </div>
+                        <a asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@blog.Id">
+                            <h2 class="post-title">
+                                @blog.Name
+                            </h2>
+                            <h3 class="post-subtitle">
+                                @blog.Description
+                            </h3>
+                        </a>
+                        <p class="post-meta">
+                            Authored by
+                            <a href="#">@blog.BlogUser.FullName</a>
+                            on @blog.Created.ToString()
+                        </p>
+                    </div>
+                </div>
 
-            <!-- Divider-->
-            <hr class="my-4" />
+                <!-- Divider-->
+                <hr class="mb-4" />
             }
 
-            <!-- Pager-->
-            <div class="d-flex justify-content-end mb-4">
-                <a class="btn btn-primary text-uppercase" href="#!">Older Posts →</a>
+
+        <!-- Add Paging controls here -->
+
+        <div class="row">
+            <div class="col h3">
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
             </div>
         </div>
-    </div>
-</div>
 
-
-
-<!-- Add Paging controls here -->
-
-<div class="row">
-    <div class="col h3">
-        Page @(Model.PageCount < Model.PageNumber ? 0: Model.PageNumber) of @Model.PageCount
-    </div>
-</div>
-
-<div class="row">
-    <div class="col">
-        @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }),
-        new PagedListRenderOptions
-        {
-            LiElementClasses = new string[] { "page-item" },
-            PageClasses = new string [] { "page-link" }
-        })
-    </div>
-</div>
-
-
+        <div class="row">
+            <div class="col">
+                @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }), new PagedListRenderOptions {LiElementClasses = new string[] { "page-item" }, PageClasses = new string[] { "page-link" }
+            })
+            </div>
+        </div>
 
 
 @section Scripts {
 
-    <script>
-        var swalMsg = '@TempData["SweetAlert"]'
-        if(swalMsg != "")
-        {
+<script>
+    var swalMsg = '@TempData["SweetAlert"]'
+        if (swalMsg != "") {
             Swal.fire({
                 icon: 'success',
                 title: swalMsg,
