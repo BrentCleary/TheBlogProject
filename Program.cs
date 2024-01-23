@@ -6,11 +6,15 @@ using TheBlogProject.ViewModels;
 using TheBlogProject.Services;
 using System.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using TheBlogProject.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+//var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
+var connectionString = ConnectionHelper.GetConnectionString(builder.Configuration);
+
 
 //InitialDataBaseService
 //builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -63,9 +67,8 @@ using (var scope = app.Services.CreateScope())
     var serviceProvider = scope.ServiceProvider;
     var dataService = serviceProvider.GetRequiredService<DataService>();
     await dataService.ManageDataAsync();
-
+    await DataHelper.ManageDataAsync(scope.ServiceProvider);
 }
-
 
 
 // Configure the HTTP request pipeline.
@@ -82,9 +85,7 @@ else
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
-
 app.UseAuthorization();
 
 app.MapControllerRoute(

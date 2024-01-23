@@ -104,11 +104,5 @@ namespace TheBlogProject.Services
             await _userManager.AddToRoleAsync(modUser, BlogRole.Moderator.ToString());
         }
 
-        
-        
-        
-        
-        // Task 3: 
-
     }
 }
