@@ -129,6 +129,10 @@ namespace TheBlogProject.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
+            ViewData["HeaderImage"] = "/images/Large_Howls_Background.jpg";
+            ViewData["MainText"] = ".NET Developing";
+            ViewData["SubText"] = "A Blog About Building in .NET";
+
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }

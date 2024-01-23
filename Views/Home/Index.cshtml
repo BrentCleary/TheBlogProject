@@ -24,8 +24,8 @@
                 <div>
                     <!-- Post preview-->
                     <div class="post-preview">
-                        <div class="w-100">
-                            <img class="img-fluid" style="height: 200px;" src="@_imageService.DecodeImage(blog.ImageData, blog.ContentType)" />
+                        <div class="w-100 text-center">
+                            <img class="img-fluid" style="height: 400px;" src="@_imageService.DecodeImage(blog.ImageData, blog.ContentType)" />
                         </div>
                         <a asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@blog.Id">
                             <h2 class="post-title">

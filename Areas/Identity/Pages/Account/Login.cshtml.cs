@@ -94,6 +94,10 @@ namespace TheBlogProject.Areas.Identity.Pages.Account
 
             returnUrl ??= Url.Content("~/");
 
+            ViewData["HeaderImage"] = "/images/Large_Howls_Background.jpg";
+            ViewData["MainText"] = ".NET Developing";
+            ViewData["SubText"] = "A Blog About Building in .NET";
+
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
