@@ -15,7 +15,9 @@ using TheBlogProject.Data;
 using TheBlogProject.Models;
 using TheBlogProject.Services;
 using TheBlogProject.Enums;
+using TheBlogProject.ViewModels;
 using X.PagedList;
+using Microsoft.Extensions.Hosting;
 
 
 namespace TheBlogProject.Controllers
@@ -77,6 +79,14 @@ namespace TheBlogProject.Controllers
                         .OrderByDescending(p => p.Created)
                         .ToPagedListAsync(pageNumber, pageSize);
 
+            // Blog Info
+            var blog = _context.Blogs.FirstOrDefault(b => b.Id == id);
+
+            ViewData["HeaderImage"] = _imageService.DecodeImage(blog.ImageData, blog.ContentType);
+            ViewData["MainText"] = blog.Name;
+            ViewData["SubText"] = blog.Description;
+
+
             return View(posts);
         }
 
@@ -84,17 +94,19 @@ namespace TheBlogProject.Controllers
         // GET: Posts/Details/5
         public async Task<IActionResult> Details(string slug)
         {
+            ViewData["Title"] = "Post Details Page";
             if (string.IsNullOrEmpty(slug))
             {
                 return NotFound();
             }
 
             var post = await _context.Posts
-                .Include(p => p.Blog)
                 .Include(p => p.BlogUser) // This BlogUser is the Author of the Posts
                 .Include(p => p.Tags)
                 .Include(p => p.Comments)
-                .ThenInclude(c => c.BlogUser) // This BlogUser is the Author of the Comments
+                .ThenInclude(c => c.BlogUser)
+                .Include(p => p.Comments)
+                .ThenInclude(c => c.Moderator)
                 .FirstOrDefaultAsync(m => m.Slug == slug);
 
             if (post == null)
@@ -102,8 +114,44 @@ namespace TheBlogProject.Controllers
                 return NotFound();
             }
 
-            return View(post);
+            var dataVM = new PostDetailViewModel()
+            { 
+                Post = post,
+                Tags = _context.Tags
+                        .Select(t => t.Text.ToLower())
+                        .Distinct().ToList()
+            
+            };
+
+            ViewData["HeaderImage"] = _imageService.DecodeImage(post.ImageData, post.ContentType);
+            ViewData["MainText"] = post.Title;
+            ViewData["SubText"] = post.Abstract;
+
+            return View(dataVM);
         }
+
+        //public async Task<IActionResult> Details(string slug)
+        //{
+        //    if (string.IsNullOrEmpty(slug))
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var post = await _context.Posts
+        //        .Include(p => p.Blog)
+        //        .Include(p => p.BlogUser) // This BlogUser is the Author of the Posts
+        //        .Include(p => p.Tags)
+        //        .Include(p => p.Comments)
+        //        .ThenInclude(c => c.BlogUser) // This BlogUser is the Author of the Comments
+        //        .FirstOrDefaultAsync(m => m.Slug == slug);
+
+        //    if (post == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return View(post);
+        //}
 
         // GET: Posts/Create
         public IActionResult Create()

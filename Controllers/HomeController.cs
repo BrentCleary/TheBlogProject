@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using System.Diagnostics;
+using System.Drawing.Drawing2D;
 using TheBlogProject.Data;
 using TheBlogProject.Models;
 using TheBlogProject.Services;
@@ -14,12 +16,16 @@ namespace TheBlogProject.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IBlogEmailSender _emailSender;
         private readonly ApplicationDbContext _context;
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IImageService _imageService;
 
-        public HomeController(ILogger<HomeController> logger, IBlogEmailSender emailSender, ApplicationDbContext context)
+        public HomeController(ILogger<HomeController> logger, IBlogEmailSender emailSender, ApplicationDbContext context, IWebHostEnvironment webHostEnvironment, IImageService imageService)
         {
             _logger = logger;
             _emailSender = emailSender;
             _context = context;
+            _webHostEnvironment = webHostEnvironment;
+            _imageService = imageService;
         }
 
         public async Task<IActionResult> Index(int? page)
@@ -37,17 +43,29 @@ namespace TheBlogProject.Controllers
                 .OrderByDescending(b => b.Created)
                 .ToPagedListAsync(pageNumber, pageSize);
 
+
+            ViewData["HeaderImage"] = "/images/Large_Howls_Background.jpg";
+            ViewData["MainText"] = ".NET Developing";
+            ViewData["SubText"] = "A Blog About Building in .NET";
+
             return View(await blogs);
         
         }
 
         public IActionResult About()
         {
+            ViewData["HeaderImage"] = "/images/Large_Howls_Background.jpg";
+            ViewData["MainText"] = ".NET Developing";
+            ViewData["SubText"] = "A Blog About Building in .NET";
+
             return View();
         }
 
         public IActionResult Contact()
         {
+            ViewData["HeaderImage"] = "/images/Large_Howls_Background.jpg";
+            ViewData["MainText"] = ".NET Developing";
+            ViewData["SubText"] = "A Blog About Building in .NET";
 
             return View();
         }
