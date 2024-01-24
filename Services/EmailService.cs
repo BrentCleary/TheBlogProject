@@ -44,8 +44,10 @@ namespace TheBlogProject.Services
 
         public async Task SendEmailAsync(string emailTo, string subject, string htmlMessage)
         {
+            var emailSender = _mailSettings.Mail ?? Environment.GetEnvironmentVariable("Mail");
+
             var email = new MimeMessage();
-            email.Sender = MailboxAddress.Parse(_mailSettings.Mail);
+            email.Sender = MailboxAddress.Parse(emailSender);
             email.To.Add(MailboxAddress.Parse(emailTo));
             email.Subject = subject;
 
@@ -55,12 +57,25 @@ namespace TheBlogProject.Services
             email.Body = builder.ToMessageBody();
 
             using var smtp = new SmtpClient();
-            smtp.Connect(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.StartTls);
-            smtp.Authenticate(_mailSettings.Mail, _mailSettings.Password);
 
-            await smtp.SendAsync(email);
+            try
+            {
+                var host = _mailSettings.Host ?? Environment.GetEnvironmentVariable("Host");
+                var port = _mailSettings.Port != 0 ? _mailSettings.Port : int.Parse(Environment.GetEnvironmentVariable("Port"))!;
+                var password = _mailSettings.Password ?? Environment.GetEnvironmentVariable("Password");
 
-            smtp.Disconnect(true);
+
+                smtp.ConnectAsync(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.StartTls);
+                smtp.AuthenticateAsync(_mailSettings.Mail, _mailSettings.Password);
+
+                await smtp.SendAsync(email);
+                smtp.DisconnectAsync(true);
+            }
+            catch (Exception ex)
+            {
+                var error = ex.Message;
+                throw;
+            }
 
         }
     }
