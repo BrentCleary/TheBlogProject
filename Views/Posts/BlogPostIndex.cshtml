@@ -13,6 +13,10 @@
 
 @model IPagedList<Post>
 
+<p>
+    <a asp-controller="Posts" asp-action="Index">Posts Index</a>
+</p>
+
 <div class="row">
     @foreach (var post in Model)
     {
