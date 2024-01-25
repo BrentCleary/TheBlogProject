@@ -4,44 +4,48 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<div class="container">
 
-<h4>Blog</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
+    <h1>Edit</h1>
 
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <textarea asp-for="Name" class="form-control"></textarea>
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
+    <h4>Blog</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Edit" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
 
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <textarea asp-for="Name" class="form-control"></textarea>
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
 
-            <div class="form-group">
-                <label asp-for="Image" class="control-label"></label>
-                <input type="file" value="@Model.Image" name="NewImage" class="form-control" accept=".jpg,.png,.gif,.jpeg" />
-                <span asp-validation-for="Image" class="text-danger"></span>
-            </div>
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <input asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
 
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
+                <div class="form-group">
+                    <label asp-for="Image" class="control-label"></label>
+                    <input type="file" value="@Model.Image" name="NewImage" class="form-control" accept=".jpg,.png,.gif,.jpeg" />
+                    <span asp-validation-for="Image" class="text-danger"></span>
+                </div>
 
-        </form>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+
+            </form>
+        </div>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+
 </div>
 
 @section Scripts {

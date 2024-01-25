@@ -44,6 +44,9 @@ namespace TheBlogProject.Controllers
         {
 
             var applicationDbContext = _context.Posts.Include(p => p.Blog).Include(p => p.BlogUser);
+
+            ViewData["HeaderImage"] = "/images/LibraryImageForPostsIndex.jpg";
+
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -56,6 +59,8 @@ namespace TheBlogProject.Controllers
             var pageSize = 5;
 
             var posts = _blogSearchService.Search(searchTerm);
+
+            ViewData["HeaderImage"] = "/images/BlogSearchPicture.webp";
 
             return View (await posts.ToPagedListAsync(pageNumber, pageSize));
 
@@ -252,6 +257,7 @@ namespace TheBlogProject.Controllers
                 return NotFound();
             }
 
+            ViewData["HeaderImage"] = "/images/printingPressEdit.jpg";
             ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name", post.BlogId);
             ViewData["TagValues"] = string.Join(",", post.Tags.Select(t => t.Text));
 

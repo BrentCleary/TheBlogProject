@@ -9,55 +9,68 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>All Posts Index</h1>
+<div class="container">
+    <div class="row">
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Image)
-            </th>
+        <h1>All Posts Index</h1>
 
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
+        <p>
+            <a asp-action="Create">Create New</a>
+        </p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Image)
+                    </th>
 
-            <th>
-                @Html.DisplayNameFor(model => model.Abstract)
-            </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Title)
+                    </th>
+
+                    <th>
+                        @Html.DisplayNameFor(model => model.Abstract)
+                    </th>
+                    <td class="fw-bold">
+                        Created
+                    </td>
+                    <td class ="fw-bold">
+                        Post Status
+                    </td>
+                    <td class="fw-bold">
+                        Actions
+                    </td>
 
 
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model) {
-        <tr>
-            <td>
-                <img class="img-fluid" width="200px" src="@_imageService.DecodeImage(item.ImageData, item.ContentType)" />
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Abstract)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Created)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReadyStatus)
-            </td>
-
-            <td>
-                <a asp-action="Edit" asp-route-slug="@item.Slug">Edit</a> |
-                <a asp-action="Details" asp-route-slug="@item.Slug">Details</a> |
-                <a asp-action="Delete" asp-route-slug="@item.Slug">Delete Post</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model) {
+                <tr>
+                    <td>
+                        <img class="img-fluid" width="200px" src="@_imageService.DecodeImage(item.ImageData, item.ContentType)" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Abstract)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Created)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReadyStatus)
+                    </td>
+                    <td class="row ms-2">
+                        <a class="div text-success" asp-action="Edit" asp-route-slug="@item.Slug">EDIT</a>
+                        <a class="div text-primary" asp-action="Details" asp-route-slug="@item.Slug">DETAILS</a>
+                        <a class="div text-danger" asp-action="Delete" asp-route-slug="@item.Slug">DELETE</a>
+                    </td>
+                </tr>
+        }
+            </tbody>
+        </table>
+    </div>
+</div>

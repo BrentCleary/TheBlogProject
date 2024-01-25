@@ -31,6 +31,9 @@ namespace TheBlogProject.Controllers
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Blogs.Include(b => b.BlogUser);
+
+            ViewData["HeaderImage"] = "/images/book-piles.jpg";
+
             return View(await applicationDbContext.ToListAsync());
         }
 
