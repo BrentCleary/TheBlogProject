@@ -44,7 +44,7 @@ namespace TheBlogProject.Controllers
                 .ToPagedListAsync(pageNumber, pageSize);
 
 
-            ViewData["HeaderImage"] = "/images/Large_Howls_Background.jpg";
+            ViewData["HeaderImage"] = "/images/blue_grid_background.jpg";
             ViewData["MainText"] = ".NET Developing";
             ViewData["SubText"] = "A Blog About Building in .NET";
 
