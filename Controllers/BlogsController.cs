@@ -65,6 +65,8 @@ namespace TheBlogProject.Controllers
         public IActionResult Create()
         {
 
+            ViewData["HeaderImage"] = "/images/open_book_blog_create.png";
+
             return View();
         }
 

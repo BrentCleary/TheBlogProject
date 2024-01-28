@@ -63,7 +63,7 @@ namespace TheBlogProject.Controllers
 
         public IActionResult Contact()
         {
-            ViewData["HeaderImage"] = "/images/Large_Howls_Background.jpg";
+            ViewData["HeaderImage"] = "/images/Mountain.jpg";
             ViewData["MainText"] = ".NET Developing";
             ViewData["SubText"] = "A Blog About Building in .NET";
 
