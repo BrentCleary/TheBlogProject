@@ -41,10 +41,8 @@ builder.Services.AddScoped<DataService>();
 
 // Custom ImageService Class
 builder.Services.AddScoped<IImageService, BasicImageService>();
-
 // Custom SlugService Class
 builder.Services.AddScoped<ISlugService, BasicSlugService>();
-
 // Custom BlogSearchService Class
 builder.Services.AddScoped<BlogSearchService>();
 
